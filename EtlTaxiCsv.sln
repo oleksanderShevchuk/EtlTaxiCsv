@@ -3,10 +3,36 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETL.Cli", "src\ETL.Cli\ETL.Cli.csproj", "{28903458-3692-44CB-AD87-4C1E7D6EE424}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETL.Core", "src\ETL.Core\ETL.Core.csproj", "{0F0493F6-6338-43AD-9E83-E7B3BB82A224}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETL.Infrastructure", "src\ETL.Infrastructure\ETL.Infrastructure.csproj", "{44A6D7B6-BA6B-4DE8-B6C3-465B202868A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETL.Tests", "src\ETL.Tests\ETL.Tests.csproj", "{1EC3EDAA-6BFD-4BE6-B884-301EC2B73CA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{28903458-3692-44CB-AD87-4C1E7D6EE424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28903458-3692-44CB-AD87-4C1E7D6EE424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28903458-3692-44CB-AD87-4C1E7D6EE424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28903458-3692-44CB-AD87-4C1E7D6EE424}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F0493F6-6338-43AD-9E83-E7B3BB82A224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F0493F6-6338-43AD-9E83-E7B3BB82A224}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F0493F6-6338-43AD-9E83-E7B3BB82A224}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F0493F6-6338-43AD-9E83-E7B3BB82A224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44A6D7B6-BA6B-4DE8-B6C3-465B202868A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44A6D7B6-BA6B-4DE8-B6C3-465B202868A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44A6D7B6-BA6B-4DE8-B6C3-465B202868A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44A6D7B6-BA6B-4DE8-B6C3-465B202868A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EC3EDAA-6BFD-4BE6-B884-301EC2B73CA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EC3EDAA-6BFD-4BE6-B884-301EC2B73CA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EC3EDAA-6BFD-4BE6-B884-301EC2B73CA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EC3EDAA-6BFD-4BE6-B884-301EC2B73CA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

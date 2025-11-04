@@ -1,0 +1,12 @@
+bin/
+obj/
+.vscode/
+.vs/
+.idea/
+*.user
+*.suo
+*.db
+*.log
+.DS_Store
+appsettings.*.json
+EOF
