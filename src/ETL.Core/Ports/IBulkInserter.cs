@@ -7,5 +7,6 @@ namespace ETL.Core.Ports
         Task BulkInsertAsync(IAsyncEnumerable<TripRecord> rows, CancellationToken ct = default);
         Task TransformDataAsync(CancellationToken ct = default);
         Task TruncateStagingAsync(CancellationToken ct = default);
+        Task RemoveDuplicatesAsync(CancellationToken ct = default);
     }
 }

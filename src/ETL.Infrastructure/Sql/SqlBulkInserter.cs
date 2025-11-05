@@ -82,6 +82,72 @@ namespace ETL.Infrastructure.Sql
             await cmd.ExecuteNonQueryAsync(ct);
         }
 
+        public async Task RemoveDuplicatesAsync(CancellationToken ct = default)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            await conn.OpenAsync(ct);
+
+            var duplicatesQuery = @"
+                WITH Duplicates AS (
+                    SELECT 
+                        tpep_pickup_datetime,
+                        tpep_dropoff_datetime,
+                        passenger_count,
+                        COUNT(*) AS cnt
+                    FROM dbo.Trips
+                    GROUP BY 
+                        tpep_pickup_datetime,
+                        tpep_dropoff_datetime,
+                        passenger_count
+                    HAVING COUNT(*) > 1
+                )
+                SELECT t.*
+                FROM dbo.Trips t
+                JOIN Duplicates d
+                    ON t.tpep_pickup_datetime = d.tpep_pickup_datetime
+                    AND t.tpep_dropoff_datetime = d.tpep_dropoff_datetime
+                    AND t.passenger_count = d.passenger_count;";
+
+            using var cmd = new SqlCommand(duplicatesQuery, conn);
+            using var reader = await cmd.ExecuteReaderAsync(ct);
+
+            var duplicates = new List<string> { "tpep_pickup_datetime,tpep_dropoff_datetime,passenger_count,trip_distance,fare_amount,tip_amount" };
+
+            while (await reader.ReadAsync(ct))
+            {
+                var line = string.Join(",",
+                    reader["tpep_pickup_datetime"],
+                    reader["tpep_dropoff_datetime"],
+                    reader["passenger_count"],
+                    reader["trip_distance"],
+                    reader["fare_amount"],
+                    reader["tip_amount"]);
+                duplicates.Add(line);
+            }
+
+            await reader.CloseAsync();
+
+            if (duplicates.Count > 1)
+            {
+                var duplicatesPath = Path.Combine(AppContext.BaseDirectory, "duplicates.csv");
+                await File.WriteAllLinesAsync(duplicatesPath, duplicates, ct);
+            }
+
+            var deleteQuery = @"
+                WITH CTE AS (
+                    SELECT *,
+                           ROW_NUMBER() OVER (
+                               PARTITION BY tpep_pickup_datetime, tpep_dropoff_datetime, passenger_count
+                               ORDER BY Id
+                           ) AS rn
+                    FROM dbo.Trips
+                )
+                DELETE FROM CTE WHERE rn > 1;";
+
+            using var deleteCmd = new SqlCommand(deleteQuery, conn);
+            await deleteCmd.ExecuteNonQueryAsync(ct);
+        }
+
         private async Task<SqlConnection> GetOpenConnectionAsync(CancellationToken ct)
         {
             var conn = new SqlConnection(_connectionString);

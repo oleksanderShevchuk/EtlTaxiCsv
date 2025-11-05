@@ -119,6 +119,9 @@ namespace ETL.Core.Services
 
                 _logger.Information("Cleaning staging table...");
                 await _bulkInserter.TruncateStagingAsync(ct);
+
+                _logger.Information("Remove duplicates...");
+                await _bulkInserter.RemoveDuplicatesAsync(ct);
             }, ct);
 
             await Task.WhenAll(producer, consumer);
