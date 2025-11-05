@@ -8,10 +8,12 @@ It performs validation, deduplication, transformation, and bulk insertion optimi
 #### 🧱 Architecture
 
 ```
+sql/                      # Sql queries
 src/
  ├── ETL.Core/            # Interfaces, models, and core services
  ├── ETL.Infrastructure/  # Implementations (CSV, SQL, I/O, Time)
  └── ETL.Cli/             # Console app entry point
+ └── ETL.Tests/           # XUnit tests
 ```
 
 #### ⚙️ Technologies
