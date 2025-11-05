@@ -5,5 +5,7 @@ namespace ETL.Core.Ports
     public interface IBulkInserter
     {
         Task BulkInsertAsync(IAsyncEnumerable<TripRecord> rows, CancellationToken ct = default);
+        Task TransformDataAsync(CancellationToken ct = default);
+        Task TruncateStagingAsync(CancellationToken ct = default);
     }
 }

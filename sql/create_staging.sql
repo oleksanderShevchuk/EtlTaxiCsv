@@ -3,15 +3,15 @@ GO
 
 CREATE TABLE dbo.StagingTrips
 (
-    tpep_pickup_datetime VARCHAR(100),
-    tpep_dropoff_datetime VARCHAR(100),
-    passenger_count VARCHAR(10),
-    trip_distance VARCHAR(50),
-    store_and_fwd_flag VARCHAR(10),
-    PULocationID VARCHAR(20),
-    DOLocationID VARCHAR(20),
-    fare_amount VARCHAR(50),
-    tip_amount VARCHAR(50),
+    tpep_pickup_datetime DATETIME2(3) NULL,
+    tpep_dropoff_datetime DATETIME2(3) NULL,
+    passenger_count SMALLINT NULL,
+    trip_distance DECIMAL(10,3) NULL,
+    store_and_fwd_flag VARCHAR(3) NULL,
+    PULocationID INT NULL,
+    DOLocationID INT NULL,
+    fare_amount DECIMAL(10,2) NULL,
+    tip_amount DECIMAL(10,2) NULL,
     RawLine NVARCHAR(MAX)
 );
 GO

@@ -10,3 +10,4 @@ obj/
 .DS_Store
 appsettings.*.json
 EOF
+samples/

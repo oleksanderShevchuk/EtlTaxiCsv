@@ -38,7 +38,8 @@ namespace ETL.Core.Services
             var accepted = Channel.CreateUnbounded<TripRecord>();
             var writer = accepted.Writer;
 
-            // producer: read & transform
+            _logger.Information("Starting CSV import from {CsvPath}", csvPath);
+
             var producer = Task.Run(async () =>
             {
                 try
@@ -76,7 +77,6 @@ namespace ETL.Core.Services
                             var key = new TripKey(pickupUtc, dropUtc, passenger);
                             if (_duplicateDetector.IsDuplicate(key))
                             {
-                                // write raw CSV line to duplicates file
                                 var raw = row.ContainsKey("RawLine") ? row["RawLine"] : string.Join(',', row.Values);
                                 await _duplicateWriter.AppendLineAsync(duplicatesPath, raw, ct);
                                 continue;
@@ -97,7 +97,6 @@ namespace ETL.Core.Services
                 }
             }, ct);
 
-            // consumer: feed to bulk inserter via IAsyncEnumerable adapter
             var consumer = Task.Run(async () =>
             {
                 var reader = accepted.Reader;
@@ -112,11 +111,18 @@ namespace ETL.Core.Services
                     }
                 }
 
+                _logger.Information("Inserting into staging table...");
                 await _bulkInserter.BulkInsertAsync(GetAsync(ct), ct);
+
+                _logger.Information("Transforming data into main table...");
+                await _bulkInserter.TransformDataAsync(ct);
+
+                _logger.Information("Cleaning staging table...");
+                await _bulkInserter.TruncateStagingAsync(ct);
             }, ct);
 
             await Task.WhenAll(producer, consumer);
-            _logger.Information("Import finished.");
+            _logger.Information("Import finished successfully.");
         }
     }
 }
