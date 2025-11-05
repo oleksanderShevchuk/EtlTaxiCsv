@@ -71,6 +71,12 @@ src/
 dotnet run --project src/ETL.Cli
 ```
 
+## 🐳 Run with Docker
+
+### Build and start the environment
+```bash
+docker-compose up --build
+
 3. Processed data will be inserted into `TaxiTrips.dbo.Trips`.
 
 #### 🧩 Scaling to Large Files
