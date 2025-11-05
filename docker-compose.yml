@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: taxi_sql
+    environment:
+      SA_PASSWORD: "password123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P password123 -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  etl:
+    build:
+      context: .
+      dockerfile: src/ETL.Cli/Dockerfile
+    container_name: taxi_etl
+    depends_on:
+      sql:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__Default: "Server=sql;Database=TaxiTrips;User Id=admin;Password=password123;TrustServerCertificate=True;"
+    volumes:
+      - ./samples:/app/samples
+    command: ["dotnet", "ETL.Cli.dll"]
+
+volumes:
+  sql_data:
